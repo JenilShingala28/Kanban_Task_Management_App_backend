@@ -27,10 +27,22 @@ app.use(
 );
 
 app.use(express.json({ limit: "50mb" }));
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "../Kanbanbackend/public/uploads"))
-);
+// app.use(
+//   "/uploads",
+//   express.static(path.join(__dirname, "../Kanbanbackend/public/uploads"))
+// );
+
+// Serve uploads depending on environment
+if (process.env.NODE_ENV === "production") {
+  // On Render, serve uploads from project root public folder
+  app.use("/uploads", express.static(path.join(__dirname, "public/uploads")));
+} else {
+  // Local development
+  app.use(
+    "/uploads",
+    express.static(path.join(__dirname, "../Kanbanbackend/public/uploads"))
+  );
+}
 console.log(
   "STATIC FOLDER:",
   path.join(__dirname, "../Kanbanbackend/public/uploads")
