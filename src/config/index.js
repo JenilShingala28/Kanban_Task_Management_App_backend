@@ -11,7 +11,7 @@ const config = (() => {
     IMAGE_URL:
       process.env.IMAGE_URL ||
       (process.env.NODE_ENV === "production"
-        ? "https://kanban-app.onrender.com"
+        ? "https://kanban-app-tx81.onrender.com"
         : "http://localhost:7000"),
     DEFAULT_USER_ROLE_ID: process.env.DEFAULT_USER_ROLE_ID,
   };
