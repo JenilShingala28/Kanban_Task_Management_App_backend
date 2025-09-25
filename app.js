@@ -11,9 +11,16 @@ const roleRouter = require("./src/routes/roleRouter");
 
 const app = express();
 
+// default Next.js dev port
+
+const allowedOrigin =
+  process.env.ALLOWED_ORIGIN ||
+  (process.env.NODE_ENV === "production"
+    ? "https://kanban-task-management-app-frontend.vercel.app"
+    : "http://localhost:3000");
 app.use(
   cors({
-    origin: "*", //
+    origin: allowedOrigin,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -31,13 +38,21 @@ console.log(
 
 connectDB();
 
+app.get("/", (req, res) => {
+  res.send("Server is running...");
+});
+
 app.use("/role", roleRouter);
 app.use("/user", userRouter);
 app.use("/status", statusRouter);
 app.use("/task", taskRouter);
 
-app.listen(config.get("PORT"), () => {
-  console.log(`server is run ${config.get("PORT")}`);
+const PORT = process.env.PORT || config.get("PORT");
+
+app.listen(PORT, () => {
+  console.log(
+    `Server running in ${config.get("NODE_ENV")} mode on port ${PORT}`
+  );
 });
 
 module.exports = app;

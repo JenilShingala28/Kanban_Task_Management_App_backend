@@ -3,8 +3,15 @@ const { config } = require("../config");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(config.get("DATABASE_KEY"));
+    await mongoose.connect(config.get("DATABASE_KEY"), {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("Database is connected");
+    if (!config.get("DATABASE_KEY")) {
+      console.error("DATABASE_KEY not defined");
+      process.exit(1);
+    }
   } catch (err) {
     console.error("Error database connection", err);
     process.exit(1); // optional, to exit process on DB connection failure
